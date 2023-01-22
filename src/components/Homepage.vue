@@ -21,12 +21,14 @@
     dense
     label="File Input"
     prepend-icon="mdi-image"
+    v-model="imageUpload"
     ></v-file-input>
 
     <v-btn
     block
     outlined
     class="white black--text"
+    @click="onChange"
     >
       <v-icon>mdi-upload</v-icon>
       Upload Image
@@ -115,11 +117,24 @@
   export default {
     name: 'Home-page',
 
-    data: () => ({
-
-    }),
+    data () {
+      return {
+        imageUpload: null
+      }
+    },
     methods: {
+      async onChange () {
+        console.log("In progress");
 
+        await fetch("https://api.trace.moe/search", {
+          method: "POST",
+          body: this.imageUpload,
+        }).then((e) => e.json())
+        .then((data) => {
+          console.log("Successful");
+          console.log(data);
+        });
+      }
     }
   }
 </script>
