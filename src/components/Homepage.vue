@@ -38,77 +38,34 @@
       Note: Remove borders and any unnecessary texts before uploading for accurate results.
     </v-card-text>
 
-    <v-card
-    class="d-flex mb-3 pa-1"
-    >
+    <v-container v-if="apiResponse" class="pa-0">
+      <v-card
+      class="d-flex mb-3 pa-1"
+      v-for="response in apiResponse" :key="response.anilist.id"
+      >
 
-    <v-img
-    src="../assets/test_image1.jpg"
-    max-width="175"
-    class="mr-2 rounded-sm"
-    ></v-img>
+        <!-- <v-img
+        :src="response.image"
+        max-width="175"
+        class="mr-2 rounded-sm"
+        ></v-img> -->
 
-    <div>
-      <v-card-title>
-        Shigatsu wa kimi no uso
-      </v-card-title>
+        <video class="video" :src="response.video"></video>
 
-      <v-spacer></v-spacer>
+        <div>
+          <v-card-subtitle>
+            {{ response.anilist.title.romaji }}
+          </v-card-subtitle>
 
-      <v-card-text>
-        Episode 47 | 99.000 Similarity
-      </v-card-text>
-    </div>
+          <v-spacer></v-spacer>
 
-    </v-card>
+          <v-card-text>
+            Episode {{ response.episode }} | {{ response.similarity }}
+          </v-card-text>
+        </div>
 
-    <v-card
-    class="d-flex mb-3 pa-1"
-    >
-
-    <v-img
-    src="../assets/test_image2.jpg"
-    max-width="175"
-    class="mr-2 rounded-sm"
-    ></v-img>
-
-    <div>
-      <v-card-title>
-        Shigatsu wa kimi no uso
-      </v-card-title>
-
-      <v-spacer></v-spacer>
-
-      <v-card-text>
-        Episode 47 | 99.000 Similarity
-      </v-card-text>
-    </div>
-
-    </v-card>
-
-    <v-card
-    class="d-flex mb-3 pa-1"
-    >
-
-    <v-img
-    src="../assets/test_image2.jpg"
-    max-width="175"
-    class="mr-2 rounded-sm"
-    ></v-img>
-
-    <div>
-      <v-card-title>
-        Shigatsu wa kimi no uso
-      </v-card-title>
-
-      <v-spacer></v-spacer>
-
-      <v-card-text>
-        Episode 47 | 99.000 Similarity
-      </v-card-text>
-    </div>
-
-    </v-card>
+      </v-card>
+    </v-container>
 
   </v-card>
 </template>
@@ -119,20 +76,21 @@
 
     data () {
       return {
-        imageUpload: null
+        imageUpload: null,
+        apiResponse: null
       }
     },
     methods: {
       async onChange () {
         console.log("In progress");
 
-        await fetch("https://api.trace.moe/search", {
+        await fetch("https://api.trace.moe/search?anilistInfo", {
           method: "POST",
           body: this.imageUpload,
         }).then((e) => e.json())
         .then((data) => {
           console.log("Successful");
-          console.log(data);
+          this.apiResponse = data.result
         });
       }
     }
@@ -149,6 +107,10 @@
   background-color: transparent;
   box-shadow: none;
   /* border: 1px solid white; */
+}
+
+.video{
+  max-width: 175px;
 }
 
 </style>
