@@ -72,7 +72,7 @@
   <v-container>
 
     <v-row
-    class="d-flex justify-center my-5"
+    class="d-flex justify-center my-5 mx-1"
     >
 
       <v-card
@@ -115,34 +115,47 @@
 
     <v-row
     v-if="apiResponse"
-    class="justify-space-between align-center"
     >
 
-      <v-card
-      width="350"
-      class="results-card mb-5"
-      dark
+      <v-col
+      xs="12"
+      sm="6"
+      md="4"
+      lg="3"
       v-for="response in apiResponse"
       :key="response.anilist.id"
       >
 
-        <v-img
-        :src="response.image"
-        contain
+        <v-card
+        class="results-card mb-5 d-flex flex-column justify-space-between"
+        height="350"
+        dark
         >
-        </v-img>
 
-        <v-card-title>
-          {{ response.anilist.title.romaji }}
-        </v-card-title>
+          <v-img
+          :src="response.image"
+          max-height="60%"
+          >
+          </v-img>
 
-        <!-- <v-spacer></v-spacer> -->
+          <v-card
+          class="d-flex flex-column justify-space-between results-card-internal"
+          height="40%"
+          >
 
-        <v-card-text>
-          Episode {{ response.episode }}
-        </v-card-text>
+            <v-card-title>
+              {{ response.anilist.title.romaji }}
+            </v-card-title>
 
-      </v-card>
+            <v-card-text>
+              Episode {{ response.episode }}
+            </v-card-text>
+
+          </v-card>
+
+        </v-card>
+
+      </v-col>
 
     </v-row>
 
@@ -202,6 +215,11 @@
   background-color: transparent;
   box-shadow: none;
   border: 1px solid gray;
+}
+
+.results-card-internal{
+  background-color: transparent;
+  box-shadow: none;
 }
 
 </style>
