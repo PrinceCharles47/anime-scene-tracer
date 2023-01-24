@@ -1,7 +1,17 @@
 <template>
 
     <v-container class="white--text">
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum placeat iure deleniti ullam, ratione iste veniam vero corrupti quaerat blanditiis atque illo cupiditate adipisci nostrum at! Dolorum deserunt vel perferendis!</p>
+      <v-btn
+      @click="fetchedData"
+      >
+        Click
+      </v-btn>
+      <!-- <p class="white--text">{{ results }}</p> -->
+      <v-container v-if="results">
+        <v-list-item v-for="(genre, i) in results.data.genres" :key="i" class="white--text">
+        {{ genre.name }}
+        </v-list-item>
+      </v-container>
     </v-container>
 
 </template>
@@ -12,7 +22,17 @@
   
       data () {
         return {
-
+          results: null
+        }
+      },
+      methods: {
+        async fetchedData () {
+          await fetch('https://api.jikan.moe/v4/anime/30749/full')
+          .then((e) => e.json())
+          .then((data) => {
+            this.results = data
+            console.log(data);
+          })
         }
       }
     }

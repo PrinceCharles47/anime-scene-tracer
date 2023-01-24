@@ -154,7 +154,7 @@
             </v-card-title>
 
             <v-card-text>
-              Episode {{ response.episode }} | Similarity {{ Math.floor(response.similarity * 100) + "%" }}
+              Episode {{ response.episode }} | Similarity {{ Math.floor(response.similarity * 100) + "%" }} | {{ response.anilist.idMal }}
             </v-card-text>
 
           </v-card>
