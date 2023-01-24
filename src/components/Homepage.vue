@@ -78,10 +78,11 @@
       <v-card
       id="title"
       dark
+      :loading="loading"
       >
 
         <v-card-title
-        class="d-flex flex-column align-center"
+        class="d-flex flex-column align-center text-h4"
         >
           ASK FOR SAUCE NO MORE!
         </v-card-title>
@@ -104,6 +105,7 @@
         outlined
         class="white black--text"
         @click="onChange"
+        :loading="loading"
         >
           <v-icon>mdi-upload</v-icon>
           Upload Image
@@ -123,12 +125,14 @@
       md="4"
       lg="3"
       v-for="response in apiResponse"
-      :key="response.anilist.id"
+      :key="response.anilist.id + Math.random() * 100"
+      class="v-col"
       >
 
         <v-card
         class="results-card mb-5 d-flex flex-column justify-space-between"
         height="350"
+        to="details"
         dark
         >
 
@@ -137,6 +141,8 @@
           max-height="60%"
           >
           </v-img>
+
+          <!-- <video :src="response.video" controls max-height="60%"></video> -->
 
           <v-card
           class="d-flex flex-column justify-space-between results-card-internal"
@@ -148,7 +154,7 @@
             </v-card-title>
 
             <v-card-text>
-              Episode {{ response.episode }}
+              Episode {{ response.episode }} | Similarity {{ Math.floor(response.similarity * 100) + "%" }}
             </v-card-text>
 
           </v-card>
@@ -170,19 +176,21 @@
     data () {
       return {
         imageUpload: null,
-        apiResponse: null
+        apiResponse: null,
+        loading: false
       }
     },
     methods: {
       async onChange () {
         console.log("In progress");
-
+        this.loading = true
         await fetch("https://api.trace.moe/search?anilistInfo", {
           method: "POST",
           body: this.imageUpload,
         }).then((e) => e.json())
         .then((data) => {
           console.log("Successful");
+          this.loading = false
           this.apiResponse = data.result
         });
       }
@@ -214,7 +222,12 @@
 .results-card{
   background-color: transparent;
   box-shadow: none;
-  border: 1px solid gray;
+  border: 1px solid rgb(48, 48, 48);
+}
+
+.results-card:hover{
+  box-shadow: 0px 0px 10px 1px rgb(78, 78, 78);
+  transition: 0.25s;
 }
 
 .results-card-internal{
