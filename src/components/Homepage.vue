@@ -104,7 +104,7 @@
         block
         outlined
         class="white black--text"
-        @click="onChange"
+        @click="getResponse"
         :loading="loading"
         >
           <v-icon>mdi-upload</v-icon>
@@ -116,7 +116,7 @@
     </v-row>
 
     <v-row
-    v-if="apiResponse"
+    v-if="animeResult"
     >
 
       <v-col
@@ -124,7 +124,7 @@
       sm="6"
       md="4"
       lg="3"
-      v-for="response in apiResponse"
+      v-for="response in animeResult"
       :key="response.anilist.id + Math.random() * 100"
       class="v-col"
       >
@@ -132,7 +132,7 @@
         <v-card
         class="results-card mb-5 d-flex flex-column justify-space-between"
         height="350"
-        to="details"
+        @click="getAnimeDetails(response.anilist.idMal)"
         dark
         >
 
@@ -149,7 +149,7 @@
           height="40%"
           >
 
-            <v-card-title>
+            <v-card-title max-height="50%">
               {{ response.anilist.title.romaji }}
             </v-card-title>
 
@@ -170,30 +170,31 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+
   export default {
     name: 'Home-page',
 
     data () {
       return {
         imageUpload: null,
-        apiResponse: null,
-        loading: false
       }
     },
     methods: {
-      async onChange () {
-        console.log("In progress");
-        this.loading = true
-        await fetch("https://api.trace.moe/search?anilistInfo", {
-          method: "POST",
-          body: this.imageUpload,
-        }).then((e) => e.json())
-        .then((data) => {
-          console.log("Successful");
-          this.loading = false
-          this.apiResponse = data.result
-        });
+      ...mapActions(['getAnimeResponse', 'getAnimeByMalId']),
+
+      getResponse () {
+        this.getAnimeResponse(this.imageUpload)
+      },
+
+      getAnimeDetails (malId) {
+        console.log('Called')
+        this.getAnimeByMalId(malId)
+        this.$router.push('/details')
       }
+    },
+    computed: {
+      ...mapState(['loading', 'animeResult'])
     }
   }
 </script>
