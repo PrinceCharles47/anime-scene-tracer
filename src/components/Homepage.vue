@@ -72,7 +72,7 @@
   <v-container>
 
     <v-row
-    class="d-flex justify-center my-5 mx-1"
+    class="d-flex justify-center mb-5 mt-2 mx-1"
     >
 
       <v-card
@@ -102,13 +102,12 @@
 
         <v-btn
         block
-        outlined
         class="white black--text"
         @click="getResponse"
         :loading="loading"
         >
           <v-icon>mdi-upload</v-icon>
-          Upload Image
+          Upload
         </v-btn>
 
       </v-card>

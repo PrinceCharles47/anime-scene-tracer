@@ -1,5 +1,8 @@
 <template>
   <v-app id="app">
+
+    <Navigation />
+
     <v-main>
       <router-view></router-view>
     </v-main>
@@ -7,10 +10,14 @@
 </template>
 
 <script>
+import Navigation from './components/Navigation.vue'
 
 export default {
   name: 'App',
 
+  components: {
+    Navigation,
+  },
   data: () => ({
     //
   }),
